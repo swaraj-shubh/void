@@ -66,7 +66,8 @@ function Navbar() {
           to="/"
           className="hidden md:block text-lg font-semibold tracking-wide hover:opacity-90"
         >
-          SecureChat
+          <img src="/vite.png" alt="Logo" className='w-10 h-10 hover:scale-105' />
+          <h1 className="text-lg font-semibold tracking-wide">git-push-win</h1>
         </Link>
 
         {/* Desktop Navigation */}

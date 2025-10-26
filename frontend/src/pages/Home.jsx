@@ -41,10 +41,10 @@ export default function Home() {
           className="text-5xl md:text-6xl font-extrabold tracking-widest text-[#00ff99]
           drop-shadow-[0_0_15px_#00ff99] animate-[flicker_2s_infinite]"
         >
-          SECURE OPS NETWORK
+          VIT Chennai - void 1.0
         </h1>
         <p className="mt-4 text-[#00ff99cc] max-w-xl text-lg font-mono leading-relaxed">
-          Quantum-Resistant Communication for Defense & Intelligence Infrastructure
+          chalo dekha jaye ye kaise banayenge
         </p>
 
         <div className="mt-10 flex flex-wrap gap-4 justify-center">
@@ -67,9 +67,11 @@ export default function Home() {
 
         <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl">
           {[
-            { title: "POST-QUANTUM ENCRYPTION", desc: "Lattice-based hybrid key exchange resistant to quantum attacks." },
-            { title: "AI-THREAT MONITOR", desc: "Adaptive detection against AI-based intrusion and spoofing attempts." },
-            { title: "STEALTH CHANNELS", desc: "Dynamic obfuscation layers and rotating session identifiers." },
+            { title: "Keshav", desc: "Backend Developer" },
+            { title: "Shubham", desc: "Frontend Developer" },
+            { title: "Tanmay", desc: "AI-ML Specialist" },
+            { title: "Tanishq", desc: "Blockchain Developer" },
+            { title: "Devansh", desc: "Cybersecurity Expert" },
           ].map((f) => (
             <Card
               key={f.title}
