@@ -2,6 +2,8 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import mongoose from "mongoose";
+import imageRoutes from "./routes/imageRoutes.js";
+import submissionRoutes from "./routes/submissionRoutes.js";
 
 dotenv.config();
 
@@ -15,6 +17,10 @@ const PORT = process.env.PORT || 5000;
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB Connected"))
   .catch((err) => console.log("❌ DB Connection Error:", err));
+
+// Routes
+app.use("/api/images", imageRoutes);
+app.use("/api/submissions", submissionRoutes);
 
 // Default route
 app.get("/", (req, res) => {

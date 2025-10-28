@@ -4,6 +4,8 @@ import Home from './pages/Home';
 import Navbar from './components/navbar';
 import './App.css'
 import Auth from './pages/Auth';
+import Playground from './pages/Playground';
+import Teacher from './pages/Teacher';
 
 function App() {
 
@@ -15,8 +17,10 @@ function App() {
           <Navbar />
         </header>
         <Routes className='mt-16'>
+          <Route path='teacher' element={<Teacher />} />
           <Route path='/' element={<Home />} />
           <Route path='/auth' element={<Auth />} />
+          <Route path='/playground' element={<Playground />} />
           <Route path='*' element={<div className='text-center text-gray-600'>404</div>} />
         </Routes>
 

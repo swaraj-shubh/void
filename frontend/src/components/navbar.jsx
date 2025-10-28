@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu"
+import { Badge } from "@/components/ui/badge"
 
 function Navbar() {
   const location = useLocation()
@@ -38,8 +39,8 @@ function Navbar() {
   }
 
   const getLinkClass = (path) => {
-    return `px-4 py-2 rounded-md transition-colors hover:bg-[#c0392b] text-gray-100 hover:shadow-lg shadow-black hover:text-white hover:font-medium transition-transform duration-300 hover:scale-105 ${
-      location.pathname === path ? "text-white font-bold" : ""
+    return `px-4 py-2 rounded-lg transition-all duration-300 hover:bg-white/10 text-white/90 hover:text-white font-medium ${
+      location.pathname === path ? "bg-white/20 text-white font-semibold shadow-inner" : ""
     }`
   }
 
@@ -48,31 +49,38 @@ function Navbar() {
   }
 
   return (
-    <header className="bg-green-900 rounded-b-sm text-white shadow-2xl w-full sticky top-0 z-50">
+    <header className="bg-gradient-to-r from-green-700 to-emerald-800 shadow-lg border-b border-white/10 w-full sticky top-0 z-50 backdrop-blur-sm">
       <div className="container flex items-center justify-between p-4 mx-auto">
         {/* Mobile menu button */}
         <div className="md:hidden flex items-center">
           <button
             onClick={toggleMobileMenu}
-            className="text-white focus:outline-none"
+            className="text-white hover:bg-white/10 p-2 rounded-lg transition-all duration-300"
             aria-label="Toggle menu"
           >
-            {isMobileMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+            {isMobileMenuOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
           </button>
         </div>
 
         {/* Logo */}
         <Link
           to="/"
-          className="hidden md:block text-lg font-semibold tracking-wide hover:opacity-90"
+          className="flex items-center space-x-3 hover:opacity-90 transition-opacity duration-300"
         >
-          <img src="/vite.png" alt="Logo" className='w-10 h-10 hover:scale-105' />
-          <h1 className="text-lg font-semibold tracking-wide">git-push-win</h1>
+          <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-lg">
+            <img src="/vite.png" alt="Logo" className="w-8 h-8 hover:scale-105 transition-transform" />
+          </div>
+          <div className="flex flex-col">
+            <h1 className="text-lg font-bold text-white tracking-tight">sangamAi</h1>
+            <Badge variant="secondary" className="text-xs px-1 py-0 h-4 bg-white/20 text-white/80 border-0">
+              smartail
+            </Badge>
+          </div>
         </Link>
 
         {/* Desktop Navigation */}
-        <NavigationMenu className="hidden md:block w-full">
-          <NavigationMenuList className="flex gap-4 w-full items-center">
+        <NavigationMenu className="hidden md:flex w-full">
+          <NavigationMenuList className="flex gap-1 w-full items-center">
             <NavigationMenuItem>
               <NavigationMenuLink asChild>
                 <Link to="/" className={getLinkClass("/")}>
@@ -83,26 +91,21 @@ function Navbar() {
 
             <NavigationMenuItem>
               <NavigationMenuLink asChild>
-                <Link to="/map" className={getLinkClass("/map")}>
-                  Map
+                <Link to="/playground" className={getLinkClass("/playground")}>
+                  Playground
                 </Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
 
-            {(role === "donor" || role === "admin") && (
-              <NavigationMenuItem>
-                <NavigationMenuLink asChild>
-                  <Link
-                    to="/restaurantDashboard"
-                    className={getLinkClass("/restaurantDashboard")}
-                  >
-                    Donate
-                  </Link>
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-            )}
+            <NavigationMenuItem>
+              <NavigationMenuLink asChild>
+                <Link to="/teacher" className={getLinkClass("/teacher")}>
+                  Teacher
+                </Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
 
-            <div className="ml-auto flex items-center gap-4">
+            <div className="ml-auto flex items-center gap-2">
               <NavigationMenuItem>
                 <NavigationMenuLink asChild>
                   <Link to="/profile" className={getLinkClass("/profile")}>
@@ -111,28 +114,21 @@ function Navbar() {
                 </NavigationMenuLink>
               </NavigationMenuItem>
 
-              {role === "admin" && (
-                <NavigationMenuItem>
-                  <NavigationMenuLink asChild>
-                    <Link to="/admin" className={getLinkClass("/admin")}>
-                      Admin
-                    </Link>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-              )}
-
               <NavigationMenuItem>
                 {isAuthenticated ? (
                   <Button
                     variant="secondary"
                     onClick={handleLogout}
-                    className="bg-white text-black font-semibold hover:bg-gray-200 transition-all duration-300"
+                    className="bg-white text-green-800 font-semibold hover:bg-gray-100 hover:scale-105 transition-all duration-300 shadow-lg border-0 rounded-lg px-6"
                   >
                     Logout
                   </Button>
                 ) : (
                   <NavigationMenuLink asChild>
-                    <Link to="/auth" className={getLinkClass("/auth")}>
+                    <Link 
+                      to="/auth" 
+                      className={`${getLinkClass("/auth")} bg-white/20 hover:bg-white/30 border border-white/30 font-semibold`}
+                    >
                       Login
                     </Link>
                   </NavigationMenuLink>
@@ -144,8 +140,8 @@ function Navbar() {
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
-          <div className="md:hidden absolute top-16 left-0 right-0 bg-[#E74C3C] z-50 shadow-lg">
-            <div className="flex flex-col p-4 space-y-4">
+          <div className="md:hidden absolute top-16 left-0 right-0 bg-gradient-to-b from-green-700 to-emerald-800 border-t border-white/10 shadow-2xl z-50 backdrop-blur-lg">
+            <div className="flex flex-col p-4 space-y-2">
               <Link
                 to="/"
                 className={getLinkClass("/")}
@@ -154,23 +150,21 @@ function Navbar() {
                 Home
               </Link>
 
-              <Link
-                to="/map"
-                className={getLinkClass("/map")}
+              {/* <Link
+                to="/image"
+                className={getLinkClass("/image")}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Map
-              </Link>
+                Image
+              </Link> */}
 
-              {(role === "donor" || role === "admin") && (
-                <Link
-                  to="/restaurantDashboard"
-                  className={getLinkClass("/restaurantDashboard")}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Donate
-                </Link>
-              )}
+              <Link
+                to="/teacher"
+                className={getLinkClass("/teacher")}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Teacher
+              </Link>
 
               <Link
                 to="/profile"
@@ -180,30 +174,20 @@ function Navbar() {
                 Profile
               </Link>
 
-              {role === "admin" && (
-                <Link
-                  to="/admin"
-                  className={getLinkClass("/admin")}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Admin
-                </Link>
-              )}
-
               {isAuthenticated ? (
                 <Button
                   onClick={() => {
                     handleLogout()
                     setIsMobileMenuOpen(false)
                   }}
-                  className="bg-white text-black font-semibold hover:bg-gray-200 transition-all duration-300 text-left"
+                  className="bg-white text-green-800 font-semibold hover:bg-gray-100 transition-all duration-300 mt-4 rounded-lg py-3"
                 >
                   Logout
                 </Button>
               ) : (
                 <Link
                   to="/auth"
-                  className={getLinkClass("/auth")}
+                  className={`${getLinkClass("/auth")} bg-white/20 border border-white/30 font-semibold text-center py-3 rounded-lg`}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Login
