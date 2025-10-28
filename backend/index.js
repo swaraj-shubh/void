@@ -4,6 +4,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import imageRoutes from "./routes/imageRoutes.js";
 import submissionRoutes from "./routes/submissionRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ mongoose.connect(process.env.MONGO_URI)
 // Routes
 app.use("/api/images", imageRoutes);
 app.use("/api/submissions", submissionRoutes);
+app.use("/api/auth", authRoutes);
 
 // Default route
 app.get("/", (req, res) => {

@@ -7,6 +7,7 @@ import { Plus, ClipboardList } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 import Upload from "../components/Upload";
+import Dashboard from "@/components/Dashboard";
 
 export default function Teacher() {
   const [examName, setExamName] = useState("");
@@ -94,6 +95,9 @@ export default function Teacher() {
                     </div>
                   </motion.div>
                 </div>
+
+                <Dashboard />
+
         {/* Exam Creation Section */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
