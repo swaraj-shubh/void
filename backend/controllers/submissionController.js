@@ -12,6 +12,7 @@ export const uploadFields = upload.fields([
 ]);
 
 // Upload controller
+// In your existing upload controller, after saving the submission:
 export const uploadSubmission = async (req, res) => {
   try {
     const { examName } = req.body;
@@ -21,10 +22,10 @@ export const uploadSubmission = async (req, res) => {
       return res.status(400).json({ message: "Exam name is required" });
     }
 
-    // Upload each file to Cloudinary
-    const studentPdf = await cloudinary.uploader.upload(
+    // Upload each file to Cloudinary (existing code)
+    const studentImg = await cloudinary.uploader.upload(
       files.studentAnswerSheet[0].path,
-      { resource_type: "raw", folder: "submissions" }
+      { resource_type: "image", folder: "submissions" }
     );
     const questionImg = await cloudinary.uploader.upload(
       files.questionPaper[0].path,
@@ -38,7 +39,7 @@ export const uploadSubmission = async (req, res) => {
     // Save in MongoDB
     const submission = new Submission({
       examName,
-      studentAnswerSheet: studentPdf.secure_url,
+      studentAnswerSheet: studentImg.secure_url,
       questionPaper: questionImg.secure_url,
       answerKey: answerImg.secure_url,
     });
@@ -48,10 +49,35 @@ export const uploadSubmission = async (req, res) => {
     // Delete local temp files
     Object.values(files).flat().forEach((file) => fs.unlinkSync(file.path));
 
-    res.status(200).json({
-      message: "Submission uploaded successfully",
-      submission,
-    });
+    // ✅ NEW: Automatically trigger evaluation
+    try {
+      // We'll make this non-blocking since evaluation can take time
+      setTimeout(async () => {
+        try {
+          const evaluationResponse = await axios.post(
+            `http://localhost:5000/api/evaluations/${submission._id}/evaluate`
+          );
+          console.log("✅ Auto-evaluation completed:", evaluationResponse.data);
+        } catch (evalError) {
+          console.error("❌ Auto-evaluation failed:", evalError.message);
+        }
+      }, 1000); // Delay 1 second to ensure submission is saved
+
+      res.status(200).json({
+        message: "Submission uploaded successfully. Evaluation in progress...",
+        submission,
+        evaluationStatus: "queued"
+      });
+
+    } catch (autoEvalError) {
+      console.error("Auto-evaluation setup error:", autoEvalError);
+      res.status(200).json({
+        message: "Submission uploaded successfully. Evaluation can be triggered manually.",
+        submission,
+        evaluationStatus: "manual_trigger_required"
+      });
+    }
+
   } catch (error) {
     console.error("Upload Error:", error);
     res.status(500).json({ message: "Upload failed", error });

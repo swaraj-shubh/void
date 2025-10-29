@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import imageRoutes from "./routes/imageRoutes.js";
 import submissionRoutes from "./routes/submissionRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
+import evaluationRoutes from "./routes/evaluationRoutes.js";
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ mongoose.connect(process.env.MONGO_URI)
 app.use("/api/images", imageRoutes);
 app.use("/api/submissions", submissionRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/evaluations", evaluationRoutes); 
 
 // Default route
 app.get("/", (req, res) => {
